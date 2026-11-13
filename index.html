@@ -346,6 +346,562 @@ document.addEventListener('click',e=>{let b=e.target.closest('[data-action]');if
 $('#nav').innerHTML=modules.map(([id,label])=>`<button type="button" class="navbtn ${id==='tablero'?'active':''}" data-go="${id}">${esc(label)}</button>`).join('');
 $('#nav').addEventListener('click',e=>{let b=e.target.closest('[data-go]');if(b)navigate(b.dataset.go);});
 renderAll();
-</script>
+</script> <!-- ==================== COPILOTO LOGÍSTICO IA · ESPIGA DE ORO ==================== -->
+<style>
+  #wms-ai-launcher {
+    position: fixed;
+    right: 24px;
+    bottom: 24px;
+    z-index: 9998;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: linear-gradient(135deg, #193e32 0%, #245845 100%);
+    color: #ffffff;
+    border: 1px solid #d6a644;
+    border-radius: 999px;
+    padding: 12px 18px;
+    font-family: "Work Sans", sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    box-shadow: 0 12px 30px rgba(16, 41, 31, 0.35);
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  #wms-ai-launcher:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 16px 36px rgba(16, 41, 31, 0.45);
+  }
+  #wms-ai-badge {
+    position: absolute;
+    top: -5px;
+    right: -4px;
+    background: #d6a644;
+    color: #193e32;
+    font-size: 11px;
+    font-weight: 800;
+    min-width: 20px;
+    height: 20px;
+    border-radius: 999px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 5px;
+    border: 2px solid #f6f5ef;
+  }
+  #wms-ai-drawer {
+    position: fixed;
+    right: 24px;
+    bottom: 84px;
+    width: min(440px, calc(100vw - 32px));
+    height: min(640px, calc(100vh - 110px));
+    background: #ffffff;
+    border: 1px solid #dce3d9;
+    border-radius: 20px;
+    box-shadow: 0 24px 60px rgba(16, 41, 31, 0.28);
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    font-family: "Work Sans", sans-serif;
+    transition: opacity 0.22s ease, transform 0.22s ease;
+  }
+  #wms-ai-drawer.hidden-ai {
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(16px) scale(0.98);
+  }
+  .wms-ai-header {
+    background: linear-gradient(135deg, #193e32 0%, #245845 100%);
+    color: #ffffff;
+    padding: 16px 18px;
+    border-bottom: 2px solid #d6a644;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .wms-ai-tabs {
+    display: flex;
+    background: #f3f5ee;
+    border-bottom: 1px solid #dce3d9;
+    padding: 4px;
+    gap: 4px;
+  }
+  .wms-ai-tab {
+    flex: 1;
+    padding: 7px 8px;
+    font-size: 12px;
+    font-weight: 700;
+    border-radius: 8px;
+    color: #61716a;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  .wms-ai-tab.active {
+    background: #ffffff;
+    color: #193e32;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+  }
+  .wms-ai-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px;
+    background: #f9faf7;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .wms-msg {
+    max-width: 90%;
+    padding: 11px 14px;
+    border-radius: 14px;
+    font-size: 13px;
+    line-height: 1.5;
+    word-wrap: break-word;
+  }
+  .wms-msg.bot {
+    align-self: flex-start;
+    background: #ffffff;
+    color: #20312b;
+    border: 1px solid #dce3d9;
+    border-bottom-left-radius: 4px;
+    box-shadow: 0 2px 8px rgba(32, 49, 43, 0.04);
+  }
+  .wms-msg.user {
+    align-self: flex-end;
+    background: #245845;
+    color: #ffffff;
+    border-bottom-right-radius: 4px;
+  }
+  .wms-msg strong {
+    color: #193e32;
+  }
+  .wms-msg.user strong {
+    color: #ffffff;
+  }
+  .wms-msg ul {
+    margin: 6px 0 6px 18px;
+    padding: 0;
+  }
+  .wms-msg li {
+    margin-bottom: 4px;
+  }
+  .wms-ai-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 8px;
+  }
+  .wms-chip-btn {
+    background: #edf3e9;
+    color: #193e32;
+    border: 1px solid #c5d6c2;
+    border-radius: 8px;
+    padding: 6px 10px;
+    font-size: 11.5px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .wms-chip-btn:hover {
+    background: #d6a644;
+    color: #193e32;
+    border-color: #d6a644;
+  }
+  .wms-ai-suggestions {
+    padding: 8px 12px;
+    background: #ffffff;
+    border-top: 1px solid #e9eee7;
+    display: flex;
+    gap: 6px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .wms-ai-suggestions::-webkit-scrollbar {
+    display: none;
+  }
+  .wms-sug-pill {
+    white-space: nowrap;
+    background: #f3f5ee;
+    color: #245845;
+    border: 1px solid #dce3d9;
+    border-radius: 999px;
+    padding: 5px 11px;
+    font-size: 11.5px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .wms-sug-pill:hover {
+    background: #245845;
+    color: #ffffff;
+  }
+  .wms-ai-footer {
+    padding: 10px 12px;
+    background: #ffffff;
+    border-top: 1px solid #dce3d9;
+    display: flex;
+    gap: 8px;
+  }
+  .wms-ai-footer input {
+    flex: 1;
+    min-height: 38px;
+    border-radius: 10px;
+    border: 1px solid #cbd6cb;
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+  .wms-ai-footer button {
+    background: #245845;
+    color: #ffffff;
+    border: none;
+    border-radius: 10px;
+    padding: 0 14px;
+    font-weight: 700;
+    font-size: 13px;
+    cursor: pointer;
+  }
+  .wms-ai-footer button:hover {
+    background: #193e32;
+  }
+  .wms-tour-card {
+    background: #ffffff;
+    border: 1px solid #dce3d9;
+    border-radius: 12px;
+    padding: 12px;
+    transition: border-color 0.15s;
+  }
+  .wms-tour-card:hover {
+    border-color: #d6a644;
+  }
+  /* Spotlight para capacitación interactiva en pantalla */
+  .wms-spotlight-active {
+    position: relative !important;
+    z-index: 9990 !important;
+    box-shadow: 0 0 0 4px #d6a644, 0 0 0 9999px rgba(16, 41, 31, 0.55) !important;
+    border-radius: 10px !important;
+    transition: box-shadow 0.3s ease;
+  }
+  #wms-coach-banner {
+    position: fixed;
+    left: 24px;
+    bottom: 24px;
+    width: min(400px, calc(100vw - 48px));
+    background: #193e32;
+    color: #ffffff;
+    border: 2px solid #d6a644;
+    border-radius: 16px;
+    padding: 16px;
+    z-index: 9997;
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
+    font-family: "Work Sans", sans-serif;
+  }
+  @media print {
+    #wms-ai-launcher, #wms-ai-drawer, #wms-coach-banner {
+      display: none !important;
+    }
+  }
+</style>
+
+<!-- Botón Flotante Esquina Inferior Derecha -->
+<button id="wms-ai-launcher" type="button" aria-label="Abrir Copiloto Logístico IA">
+  <span style="font-size:17px; color:#d6a644;">✦</span>
+  <span>Soporte IA · WMS</span>
+  <span id="wms-ai-badge">0</span>
+</button>
+
+<!-- Ventana del Copiloto IA -->
+<aside id="wms-ai-drawer" class="hidden-ai" aria-label="Asistente Inteligente de Soporte WMS">
+  <div class="wms-ai-header">
+    <div>
+      <div style="font-size:14px; font-weight:800; display:flex; align-items:center; gap:6px;">
+        <span style="color:#d6a644;">✦</span> Copiloto Logístico IA
+      </div>
+      <div style="font-size:11px; color:#dbe9dc; margin-top:2px;">
+        En vivo · Panadería Espiga de Oro
+      </div>
+    </div>
+    <div style="display:flex; gap:6px;">
+      <button type="button" id="wms-ai-reset" title="Reiniciar conversación" style="background:rgba(255,255,255,0.12); color:#fff; border:none; border-radius:8px; padding:5px 9px; font-size:11px; cursor:pointer;">Limpiar</button>
+      <button type="button" id="wms-ai-close" title="Cerrar" style="background:rgba(255,255,255,0.12); color:#fff; border:none; border-radius:8px; padding:5px 9px; font-size:12px; font-weight:700; cursor:pointer;">✕</button>
+    </div>
+  </div>
+
+  <div class="wms-ai-tabs">
+    <button type="button" class="wms-ai-tab active" data-aitab="chat">Asistente IA</button>
+    <button type="button" class="wms-ai-tab" data-aitab="diag">Auditoría en Vivo</button>
+    <button type="button" class="wms-ai-tab" data-aitab="tours">Academia Guiada</button>
+  </div>
+
+  <!-- Vista 1: Chat Conversacional -->
+  <div id="wms-ai-view-chat" class="wms-ai-body"></div>
+
+  <!-- Vista 2: Auditoría Operacional en Vivo -->
+  <div id="wms-ai-view-diag" class="wms-ai-body" style="display:none;"></div>
+
+  <!-- Vista 3: Academia Interactiva Guiada -->
+  <div id="wms-ai-view-tours" class="wms-ai-body" style="display:none;"></div>
+
+  <div class="wms-ai-suggestions" id="wms-ai-suggestions">
+    <button type="button" class="wms-sug-pill" data-prompt="Analiza el estado actual de mi bodega">Estado de bodega</button>
+    <button type="button" class="wms-sug-pill" data-prompt="¿Qué productos están bajo ROP o por vencer?">Alertas ROP y FEFO</button>
+    <button type="button" class="wms-sug-pill" data-prompt="¿Cómo registro una recepción paso a paso?">¿Cómo recepcionar?</button>
+    <button type="button" class="wms-sug-pill" data-prompt="Explícame la diferencia entre FEFO y FIFO aquí">FEFO vs FIFO</button>
+    <button type="button" class="wms-sug-pill" data-prompt="¿Cómo hago un conteo cíclico y ajuste?">Conteo cíclico</button>
+  </div>
+
+  <form id="wms-ai-form" class="wms-ai-footer">
+    <input id="wms-ai-input" type="text" placeholder="Pregunta sobre stock, SKU, FEFO, ROP o cómo usar..." autocomplete="off">
+    <button type="submit">Enviar</button>
+  </form>
+</aside>
+
+<!-- Banner Flotante de Capacitación Guiada (Spotlight) -->
+<div id="wms-coach-banner" style="display:none;">
+  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+    <span id="wms-coach-step-tag" style="font-size:11px; font-weight:800; color:#d6a644; text-transform:uppercase; letter-spacing:0.05em;">Paso 1 de 4</span>
+    <button type="button" id="wms-coach-stop" style="background:transparent; border:none; color:#dbe9dc; font-size:12px; cursor:pointer; font-weight:700;">Salir ✕</button>
+  </div>
+  <div id="wms-coach-title" style="font-weight:700; font-size:14px; margin-bottom:4px;"></div>
+  <div id="wms-coach-desc" style="font-size:12.5px; color:#ecf1e6; line-height:1.45; margin-bottom:12px;"></div>
+  <div style="display:flex; justify-content:space-between; gap:8px;">
+    <button type="button" id="wms-coach-prev" style="background:rgba(255,255,255,0.15); color:#fff; border:none; border-radius:8px; padding:7px 12px; font-size:12px; font-weight:600; cursor:pointer;">← Anterior</button>
+    <button type="button" id="wms-coach-next" style="background:#d6a644; color:#193e32; border:none; border-radius:8px; padding:7px 14px; font-size:12px; font-weight:800; cursor:pointer;">Siguiente →</button>
+  </div>
+</div>
+
+<script>
+(function initWmsCopilot() {
+  const chatBox = document.getElementById('wms-ai-view-chat');
+  const diagBox = document.getElementById('wms-ai-view-diag');
+  const toursBox = document.getElementById('wms-ai-view-tours');
+  const drawer = document.getElementById('wms-ai-drawer');
+  const badge = document.getElementById('wms-ai-badge');
+  const input = document.getElementById('wms-ai-input');
+
+  let conversationContext = { lastProductSku: null, lastTopic: null };
+  let activeTour = null;
+  let activeStepIndex = 0;
+
+  // 1. Motor de Lectura Viva del Estado del WMS
+  function getLiveSnapshot() {
+    const active = products.filter(p => p.active);
+    const lowRop = active.filter(p => p.stock <= p.rop);
+    const outOfStock = active.filter(p => p.stock <= 0);
+    const unconfirmed = active.filter(p => p.status === 'Pendiente de confirmar');
+    const expiringLots = lots.filter(l => l.qty > 0 && l.expiry && days(l.expiry) >= 0 && days(l.expiry) <= settings.expiryWindow);
+    const expiredLots = lots.filter(l => l.qty > 0 && l.expiry && days(l.expiry) < 0);
+    const unverifiedLots = lots.filter(l => l.qty > 0 && !l.confirmed);
+    const currentMonth = today().slice(0, 7);
+    const monthMoves = movements.filter(m => m.date.slice(0, 7) === currentMonth);
+    const wasteQty = monthMoves.filter(m => m.type === 'Merma / baja').reduce((s, m) => s + Math.abs(m.qty), 0);
+    const accuracy = counts.length
+      ? Math.round((counts.filter(c => Math.abs(c.system - c.physical) < 0.001).length / counts.length) * 100)
+      : null;
+
+    return {
+      active, lowRop, outOfStock, unconfirmed,
+      expiringLots, expiredLots, unverifiedLots,
+      monthMoves, wasteQty, accuracy
+    };
+  }
+
+  function updateAlertBadge() {
+    const snap = getLiveSnapshot();
+    const totalAlerts = snap.lowRop.length + snap.expiringLots.length + snap.expiredLots.length + snap.unconfirmed.length;
+    badge.textContent = totalAlerts;
+    badge.style.background = (snap.expiredLots.length > 0 || snap.outOfStock.length > 0) ? '#e05247' : '#d6a644';
+    badge.style.color = (snap.expiredLots.length > 0 || snap.outOfStock.length > 0) ? '#ffffff' : '#193e32';
+  }
+
+  // 2. Recorridos Interactivos Guiados (Capacitación en pantalla con Spotlight)
+  const trainingTours = [
+    {
+      id: 'recepcion',
+      title: '1. Recepción de Mercadería y Lotes',
+      level: 'Operación Básica · 2 min',
+      summary: 'Aprende a ingresar compras de proveedores, registrar facturas/guías y asignar lotes con fecha de vencimiento.',
+      steps: [
+        {
+          module: 'operaciones',
+          selector: '#move-type',
+          title: 'Selecciona "Recepción"',
+          desc: 'En el módulo de Recepción y Salidas, elige "Recepción" como tipo de operación. Esto sumará stock y creará un lote trazable.'
+        },
+        {
+          module: 'operaciones',
+          selector: '#move-product',
+          title: 'Elige el producto recibido',
+          desc: 'Selecciona el insumo (ej. Harina tradicional 25 kg o Queso mantecoso). Verás su stock actual entre paréntesis.'
+        },
+        {
+          module: 'operaciones',
+          selector: '#move-lot',
+          title: 'Documenta Proveedor, Guía, Lote y Ubicación',
+          desc: 'Para que el sistema valide la recepción debes llenar: Proveedor, Factura/Guía, código de Lote y Ubicación (ej. Bodega · tarimas). Si es perecible, añade su vencimiento.'
+        },
+        {
+          module: 'lotes',
+          selector: '#lot-list',
+          title: 'Verifica la trazabilidad en Lotes',
+          desc: 'Al guardar, el lote aparece aquí ordenado automáticamente por fecha de vencimiento (FEFO) o ingreso (FIFO).'
+        }
+      ]
+    },
+    {
+      id: 'salidas',
+      title: '2. Salidas a Producción y Ventas (FEFO / FIFO)',
+      level: 'Control de Rotación · 2 min',
+      summary: 'Cómo descontar insumos para el horno o ventas de mesón evitando que se venzan los lotes antiguos.',
+      steps: [
+        {
+          module: 'lotes',
+          selector: '#lot-list',
+          title: 'Revisa qué lote debes sacar físicamente',
+          desc: 'Antes de retirar mercadería de cámara o bodega, mira la primera fila de cada producto: el sistema ordena FEFO (vence primero) o FIFO (entró primero).'
+        },
+        {
+          module: 'operaciones',
+          selector: '#move-type',
+          title: 'Elige "Producción" o "Venta"',
+          desc: 'Selecciona "Producción" cuando el maestro panadero retire insumos para amasijo, o "Venta" para salidas directas de mesón.'
+        },
+        {
+          module: 'operaciones',
+          selector: '#move-qty',
+          title: 'Ingresa cantidad y responsable',
+          desc: 'Al confirmar, el WMS descontará automáticamente del lote más antiguo/próximo a vencer y bloqueará cualquier lote vencido.'
+        }
+      ]
+    },
+    {
+      id: 'conteo',
+      title: '3. Conteo Cíclico y Ajuste Autorizado',
+      level: 'Exactitud de Inventario · 3 min',
+      summary: 'Cómo auditar el inventario físico (ABC) y corregir diferencias sin perder trazabilidad.',
+      steps: [
+        {
+          module: 'conteo',
+          selector: '#count-form',
+          title: 'Registra el conteo físico ciego',
+          desc: 'Cuenta físicamente en bodega (A semanal, B quincenal, C mensual) e ingresa la cantidad real aquí. Esto NO altera el stock todavía.'
+        },
+        {
+          module: 'conteo',
+          selector: '#count-list',
+          title: 'Analiza la desviación y autoriza',
+          desc: 'En la tabla inferior verás la diferencia entre Sistema y Físico. Haz clic en "Ajuste autorizado", indica quién autoriza y el motivo para cuadrar el stock.'
+        }
+      ]
+    },
+    {
+      id: 'reposicion',
+      title: '4. Reposición ROP y Clasificación ABC',
+      level: 'Planificación · 2 min',
+      summary: 'Entiende cuándo pedir a proveedores y cómo se calcula el Punto de Reorden (ROP).',
+      steps: [
+        {
+          module: 'reposicion',
+          selector: '#reorder-list',
+          title: 'Identifica quiebres inminentes',
+          desc: 'Cuando Stock ≤ ROP, el sistema calcula un pedido sugerido orientativo (2 × ROP - Stock). Revisa el plazo de entrega (Lead Time) antes de llamar al proveedor.'
+        },
+        {
+          module: 'productos',
+          selector: '#product-list',
+          title: 'Ajusta parámetros en la ficha',
+          desc: 'Si cambia el consumo diario o el plazo de un proveedor, haz clic en "Editar" sobre el producto y usa el botón "Calcular ROP".'
+        }
+      ]
+    }
+  ];
+
+  function startTour(tourId) {
+    const tour = trainingTours.find(t => t.id === tourId);
+    if (!tour) return;
+    activeTour = tour;
+    activeStepIndex = 0;
+    drawer.classList.add('hidden-ai');
+    renderTourStep();
+  }
+
+  function clearSpotlight() {
+    document.querySelectorAll('.wms-spotlight-active').forEach(el => el.classList.remove('wms-spotlight-active'));
+  }
+
+  function renderTourStep() {
+    if (!activeTour) return;
+    clearSpotlight();
+    const step = activeTour.steps[activeStepIndex];
+    navigate(step.module);
+
+    setTimeout(() => {
+      const target = document.querySelector(step.selector);
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        target.classList.add('wms-spotlight-active');
+      }
+      const banner = document.getElementById('wms-coach-banner');
+      document.getElementById('wms-coach-step-tag').textContent = `${activeTour.title} · Paso ${activeStepIndex + 1} de ${activeTour.steps.length}`;
+      document.getElementById('wms-coach-title').textContent = step.title;
+      document.getElementById('wms-coach-desc').textContent = step.desc;
+      document.getElementById('wms-coach-prev').disabled = activeStepIndex === 0;
+      document.getElementById('wms-coach-next').textContent = activeStepIndex === activeTour.steps.length - 1 ? 'Finalizar ✓' : 'Siguiente →';
+      banner.style.display = 'block';
+    }, 180);
+  }
+
+  function stopTour() {
+    clearSpotlight();
+    activeTour = null;
+    document.getElementById('wms-coach-banner').style.display = 'none';
+  }
+
+  document.getElementById('wms-coach-stop').onclick = stopTour;
+  document.getElementById('wms-coach-prev').onclick = () => {
+    if (activeStepIndex > 0) { activeStepIndex--; renderTourStep(); }
+  };
+  document.getElementById('wms-coach-next').onclick = () => {
+    if (!activeTour) return;
+    if (activeStepIndex < activeTour.steps.length - 1) {
+      activeStepIndex++;
+      renderTourStep();
+    } else {
+      stopTour();
+      drawer.classList.remove('hidden-ai');
+      appendBotMessage('¡Excelente! Completaste la guía práctica. ¿Quieres practicar otro flujo o consultar algún producto de la bodega?');
+    }
+  };
+
+  // 3. Motor de Inteligencia Conversacional Contextual
+  function normalize(str) {
+    return String(str || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  }
+
+  function findMentionedProduct(qNorm) {
+    for (const p of products) {
+      const skuNorm = normalize(p.sku);
+      const nameWords = normalize(p.name).split(/\s+/).filter(w => w.length > 3);
+      if (qNorm.includes(skuNorm)) return p;
+      if (nameWords.some(w => qNorm.includes(w))) return p;
+    }
+    if (conversationContext.lastProductSku && /\b(este|ese|su|el producto|cuanto queda|que lote|proveedor|ubicacion)\b/.test(qNorm)) {
+      return products.find(p => p.sku === conversationContext.lastProductSku) || null;
+    }
+    return null;
+  }
+
+  function generateIntelligentReply(rawQuestion) {
+    const q = normalize(rawQuestion);
+    const snap = getLiveSnapshot();
+    const matchedProduct = findMentionedProduct(q);
+
+    if (matchedProduct) {
+      conversationContext.lastProductSku = matchedProduct.sku;
+    }
+
+    // Caso A: Consulta específica sobre un producto o SKU (o seguimiento sobre el último producto)
+    if (matchedProduct && !/(como registro|como hago|tutorial|guia|explica fefo)/.test(q)
  
 </body></html>
