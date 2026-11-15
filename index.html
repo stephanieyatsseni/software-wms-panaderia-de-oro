@@ -127,7 +127,7 @@
           <div class="panel">
             <div class="flex flex-wrap justify-between items-center gap-3 mb-4">
               <div>
-                <h2 class="font-bold text-xl">Productos, precios, vencimientos y estados (Editable)</h2>
+                <h2 class="font-bold text-xl">Inventario de Productos</h2>
                 <p class="small muted">Haz clic en cualquier campo (precio, vencimiento, ubicación, proveedor o estado) para editarlo y confirmarlo al instante.</p>
               </div>
               <div class="flex flex-wrap gap-2">
@@ -165,8 +165,8 @@
           <div class="panel">
             <div class="flex flex-wrap justify-between items-center gap-3 mb-3">
               <div>
-                <h2 class="font-bold text-xl">Lotes · FEFO / FIFO (Código, vencimiento y estado editables)</h2>
-                <p class="small muted">Edita el código de lote, la fecha de vencimiento (si dice "Sin confirmar"), la ubicación o confirma su verificación directamente en cada fila.</p>
+                <h2 class="font-bold text-xl">Lotes · FEFO / FIFO</h2>
+                <p class="small muted">Código de lote, la fecha de vencimiento (si dice "Sin confirmar"), la ubicación o confirma su verificación directamente en cada fila.</p>
               </div>
               <button type="button" class="btn alt" onclick="confirmAllPendingLots()">✓ Confirmar todos los lotes</button>
             </div>
@@ -201,7 +201,7 @@
           <div class="panel mb-4">
             <div class="flex flex-wrap justify-between items-center gap-3 mb-3">
               <div>
-                <h2 class="font-bold text-xl">Mapa visual y registro editable de Bodega, Rack y Nivel</h2>
+                <h2 class="font-bold text-xl">Mapa visual y registro de Bodega, Rack y Nivel</h2>
                 <p class="small muted">Visualiza dónde está cada producto y reasigna su <strong>Bodega</strong>, <strong>Rack</strong> o <strong>Nivel</strong> directamente desde aquí.</p>
               </div>
               <button type="button" class="btn" onclick="entityDialog('location')">+ Agregar nueva ubicación (Bodega / Rack / Nivel)</button>
@@ -219,10 +219,10 @@
               </label>
             </div>
 
-            <h3 class="font-bold text-base mb-2 text-emerald-900">1. Vista visual por Racks y Niveles (Reubicación rápida)</h3>
+            <h3 class="font-bold text-base mb-2 text-emerald-900">1. Vista visual por Racks y Niveles</h3>
             <div id="rack-visual-map" class="rack-grid mb-6"></div>
 
-            <h3 class="font-bold text-base mb-2 text-emerald-900">2. Catálogo editable de coordenadas registradas</h3>
+            <h3 class="font-bold text-base mb-2 text-emerald-900">2. Registro de Bodega</h3>
             <div id="locations-list"></div>
           </div>
         </section>
@@ -232,7 +232,7 @@
           <div class="panel">
             <div class="flex flex-wrap justify-between items-center gap-3 mb-3">
               <div>
-                <h2 class="font-bold text-xl">Proveedores y entregas (Editable en línea)</h2>
+                <h2 class="font-bold text-xl">Proveedores y entregas </h2>
                 <p class="small muted">Edita directamente los días de pedido, calendario de entrega o plazo (Lead time) de los proveedores que figuran "Por confirmar".</p>
               </div>
               <button type="button" class="btn" onclick="entityDialog('supplier')">+ Agregar proveedor</button>
