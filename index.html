@@ -51,29 +51,131 @@
     @media(max-width:520px){.fields{grid-template-columns:1fr}.span2{grid-column:span 1}.mainarea{padding:16px}.panel{padding:15px}}
     @media print{.sidebar,.actions,.no-print,#message,.notice,#wms-ai-launcher,#wms-ai-drawer{display:none!important}.shell{display:block}.mainarea{padding:0}.view{display:none!important}#reportes{display:block!important}.panel{box-shadow:none;break-inside:avoid}body{background:white!important}}
 
-    /* Estilos Copiloto IA */
-    #wms-ai-launcher { position: fixed; right: 24px; bottom: 24px; z-index: 9998; display: flex; align-items: center; gap: 10px; background: linear-gradient(135deg, #193e32 0%, #245845 100%); color: #ffffff; border: 1px solid #d6a644; border-radius: 999px; padding: 12px 18px; font-family: "Work Sans", sans-serif; font-size: 13px; font-weight: 700; box-shadow: 0 12px 30px rgba(16, 41, 31, 0.35); cursor: pointer; }
-    #wms-ai-badge { position: absolute; top: -5px; right: -4px; background: #d6a644; color: #193e32; font-size: 11px; font-weight: 800; min-width: 20px; height: 20px; border-radius: 999px; display: flex; align-items: center; justify-content: center; padding: 0 5px; border: 2px solid #f6f5ef; }
-    #wms-ai-drawer { position: fixed; right: 24px; bottom: 84px; width: min(440px, calc(100vw - 32px)); height: min(640px, calc(100vh - 110px)); background: #ffffff; border: 1px solid #dce3d9; border-radius: 20px; box-shadow: 0 24px 60px rgba(16, 41, 31, 0.28); z-index: 9999; display: flex; flex-direction: column; overflow: hidden; font-family: "Work Sans", sans-serif; transition: opacity 0.22s ease, transform 0.22s ease; }
+    /* ================= ESTILOS COPILOTO LOGÍSTICO IA PRO ================= */
+    #wms-ai-launcher {
+      position: fixed; right: 24px; bottom: 24px; z-index: 9998;
+      display: flex; align-items: center; gap: 10px;
+      background: linear-gradient(135deg, #15362b 0%, #245845 100%);
+      color: #ffffff; border: 1.5px solid #d6a644; border-radius: 999px;
+      padding: 13px 20px; font-family: "Work Sans", sans-serif;
+      font-size: 13.5px; font-weight: 700;
+      box-shadow: 0 14px 34px rgba(16, 41, 31, 0.38);
+      cursor: pointer; transition: transform 0.18s ease, box-shadow 0.18s ease;
+    }
+    #wms-ai-launcher:hover { transform: translateY(-2px); box-shadow: 0 18px 38px rgba(16, 41, 31, 0.45); }
+    #wms-ai-pulse {
+      width: 9px; height: 9px; border-radius: 50%; background: #4ade80;
+      box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.7);
+      animation: aiPulse 2s infinite;
+    }
+    @keyframes aiPulse {
+      0% { box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.7); }
+      70% { box-shadow: 0 0 0 8px rgba(74, 222, 128, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(74, 222, 128, 0); }
+    }
+    #wms-ai-badge {
+      position: absolute; top: -6px; right: -4px;
+      background: #d6a644; color: #193e32; font-size: 11px; font-weight: 800;
+      min-width: 22px; height: 22px; border-radius: 999px;
+      display: flex; align-items: center; justify-content: center;
+      padding: 0 6px; border: 2px solid #f6f5ef;
+    }
+    #wms-ai-drawer {
+      position: fixed; right: 24px; bottom: 86px;
+      width: min(470px, calc(100vw - 32px)); height: min(680px, calc(100vh - 105px));
+      background: #ffffff; border: 1px solid #cbd6cb; border-radius: 22px;
+      box-shadow: 0 26px 65px rgba(16, 41, 31, 0.32); z-index: 9999;
+      display: flex; flex-direction: column; overflow: hidden;
+      font-family: "Work Sans", sans-serif;
+      transition: opacity 0.22s ease, transform 0.22s ease;
+    }
     #wms-ai-drawer.hidden-ai { opacity: 0; pointer-events: none; transform: translateY(16px) scale(0.98); }
-    .wms-ai-header { background: linear-gradient(135deg, #193e32 0%, #245845 100%); color: #ffffff; padding: 16px 18px; border-bottom: 2px solid #d6a644; display: flex; justify-content: space-between; align-items: center; }
-    .wms-ai-tabs { display: flex; background: #f3f5ee; border-bottom: 1px solid #dce3d9; padding: 4px; gap: 4px; }
-    .wms-ai-tab { flex: 1; padding: 7px 8px; font-size: 12px; font-weight: 700; border-radius: 8px; color: #61716a; background: transparent; border: none; cursor: pointer; }
-    .wms-ai-tab.active { background: #ffffff; color: #193e32; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06); }
-    .wms-ai-body { flex: 1; overflow-y: auto; padding: 16px; background: #f9faf7; display: flex; flex-direction: column; gap: 12px; }
-    .wms-msg { max-width: 90%; padding: 11px 14px; border-radius: 14px; font-size: 13px; line-height: 1.5; word-wrap: break-word; }
-    .wms-msg.bot { align-self: flex-start; background: #ffffff; color: #20312b; border: 1px solid #dce3d9; border-bottom-left-radius: 4px; }
-    .wms-msg.user { align-self: flex-end; background: #245845; color: #ffffff; border-bottom-right-radius: 4px; }
-    .wms-ai-actions { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
-    .wms-chip-btn { background: #edf3e9; color: #193e32; border: 1px solid #c5d6c2; border-radius: 8px; padding: 6px 10px; font-size: 11.5px; font-weight: 700; cursor: pointer; }
+    .wms-ai-header {
+      background: linear-gradient(135deg, #15362b 0%, #245845 100%);
+      color: #ffffff; padding: 15px 18px; border-bottom: 2px solid #d6a644;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .wms-ai-tabs {
+      display: flex; background: #eef2ea; border-bottom: 1px solid #dce3d9;
+      padding: 5px; gap: 5px;
+    }
+    .wms-ai-tab {
+      flex: 1; padding: 8px 6px; font-size: 12px; font-weight: 700;
+      border-radius: 9px; color: #54665e; background: transparent;
+      border: none; cursor: pointer; transition: all 0.15s ease;
+    }
+    .wms-ai-tab.active { background: #ffffff; color: #193e32; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08); }
+    .wms-ai-body {
+      flex: 1; overflow-y: auto; padding: 16px; background: #f8faf6;
+      display: flex; flex-direction: column; gap: 12px; scroll-behavior: smooth;
+    }
+    .wms-msg {
+      max-width: 92%; padding: 12px 14px; border-radius: 15px;
+      font-size: 13px; line-height: 1.55; word-wrap: break-word;
+      box-shadow: 0 2px 6px rgba(25, 62, 50, 0.04);
+    }
+    .wms-msg.bot {
+      align-self: flex-start; background: #ffffff; color: #20312b;
+      border: 1px solid #dce3d9; border-bottom-left-radius: 4px;
+    }
+    .wms-msg.user {
+      align-self: flex-end; background: #245845; color: #ffffff;
+      border-bottom-right-radius: 4px;
+    }
+    .wms-ai-tag {
+      display: inline-block; font-size: 10px; font-weight: 800; text-transform: uppercase;
+      letter-spacing: 0.05em; padding: 2px 7px; border-radius: 5px;
+      background: #edf3e9; color: #245845; margin-bottom: 6px;
+    }
+    .wms-ai-actions { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+    .wms-chip-btn {
+      background: #edf3e9; color: #193e32; border: 1px solid #c2d4bf;
+      border-radius: 8px; padding: 6px 10px; font-size: 11.5px; font-weight: 700;
+      cursor: pointer; transition: all 0.15s ease;
+    }
     .wms-chip-btn:hover { background: #d6a644; color: #193e32; border-color: #d6a644; }
-    .wms-ai-suggestions { padding: 8px 12px; background: #ffffff; border-top: 1px solid #e9eee7; display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; }
-    .wms-sug-pill { white-space: nowrap; background: #f3f5ee; color: #245845; border: 1px solid #dce3d9; border-radius: 999px; padding: 5px 11px; font-size: 11.5px; font-weight: 600; cursor: pointer; }
-    .wms-sug-pill:hover { background: #245845; color: #ffffff; }
-    .wms-ai-footer { padding: 10px 12px; background: #ffffff; border-top: 1px solid #dce3d9; display: flex; gap: 8px; }
-    .wms-ai-footer input { flex: 1; min-height: 38px; border-radius: 10px; border: 1px solid #cbd6cb; padding: 8px 12px; font-size: 13px; }
-    .wms-ai-footer button { background: #245845; color: #ffffff; border: none; border-radius: 10px; padding: 0 14px; font-weight: 700; font-size: 13px; cursor: pointer; }
-    .wms-tour-card { background: #ffffff; border: 1px solid #dce3d9; border-radius: 12px; padding: 12px; }
+    .wms-ai-suggestions {
+      padding: 8px 12px; background: #ffffff; border-top: 1px solid #e9eee7;
+      display: flex; gap: 6px; overflow-x: auto; scrollbar-width: thin;
+    }
+    .wms-sug-pill {
+      white-space: nowrap; background: #f3f5ee; color: #245845;
+      border: 1px solid #d5dfd5; border-radius: 999px;
+      padding: 5px 11px; font-size: 11.5px; font-weight: 600; cursor: pointer;
+    }
+    .wms-sug-pill:hover { background: #245845; color: #ffffff; border-color: #245845; }
+    .wms-ai-footer {
+      padding: 10px 12px; background: #ffffff; border-top: 1px solid #dce3d9;
+      display: flex; gap: 8px;
+    }
+    .wms-ai-footer input {
+      flex: 1; min-height: 40px; border-radius: 10px;
+      border: 1px solid #cbd6cb; padding: 8px 12px; font-size: 13px;
+    }
+    .wms-ai-footer button {
+      background: #245845; color: #ffffff; border: none; border-radius: 10px;
+      padding: 0 16px; font-weight: 700; font-size: 13px; cursor: pointer;
+    }
+    .wms-ai-footer button:hover { filter: brightness(1.1); }
+    .wms-tour-card {
+      background: #ffffff; border: 1px solid #dce3d9; border-radius: 13px;
+      padding: 13px; box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+    }
+    .wms-typing {
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 10px 14px; background: #ffffff; border: 1px solid #dce3d9;
+      border-radius: 14px; align-self: flex-start; font-size: 12px; color: #61716a;
+    }
+    .wms-typing span {
+      width: 6px; height: 6px; background: #245845; border-radius: 50%;
+      animation: bounceDot 1.2s infinite ease-in-out;
+    }
+    .wms-typing span:nth-child(2) { animation-delay: 0.2s; }
+    .wms-typing span:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes bounceDot {
+      0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
+      40% { transform: scale(1); opacity: 1; }
+    }
   </style>
   <script src="https://cdn.tailwindcss.com/3.4.17" type="text/javascript"></script>
 </head>
@@ -537,7 +639,6 @@
         p.active = true;
         p.status = newStatus;
       }
-      // Si se confirma el producto, confirmar también sus lotes iniciales
       if (newStatus !== 'Pendiente de confirmar') {
         lots.filter(l => l.productId === p.id).forEach(l => {
           l.confirmed = true;
@@ -592,6 +693,7 @@
       saveState();
       notify(count ? `✓ Se confirmaron ${count} productos pendientes.` : 'No había productos pendientes por confirmar.');
       renderAll();
+      return count;
     }
 
     function confirmAllPendingLots() {
@@ -868,7 +970,7 @@
       return `<span class="pill ${['Agotado','Bloqueado','Vencido'].includes(s) ? 'danger' : ['Bajo ROP','Próximo a vencer','Pendiente de confirmar','Sin confirmar'].includes(s) ? 'alert' : ''}">${esc(s)}</span>`;
     }
 
-    // ==================== RENDER PRODUCTOS (TODO EDITABLE EN LÍNEA) ====================
+    // ==================== RENDER PRODUCTOS ====================
     function renderProducts() {
       let search = $('#search').value.toLowerCase(),
           abc = $('#filter-abc').value,
@@ -1286,7 +1388,7 @@
       $('#recent').innerHTML = movements.length ? movements.slice(0, 5).map(m => `<div class="py-2 border-b small"><strong>${esc(m.type)}</strong> · ${esc(m.sku)} · ${m.qty} ${esc(m.unit)} (${clp(m.totalValue)})<br><span class="muted">${esc(m.date)} · ${esc(m.location)} · ${esc(m.responsible || 'Sin responsable')}</span></div>`).join('') : '<p class="small muted">Aún no se registran movimientos en esta sesión.</p>';
     }
 
-    // ==================== LOTES EDITABLES (CÓDIGO, VENCIMIENTO, UBICACIÓN Y ESTADO) ====================
+    // ==================== LOTES EDITABLES ====================
     function renderLots() {
       const whOpts = [...new Set(['Bodega Seca', 'Cámara Refrigerada', 'Vitrina Refrigerada', ...locations.map(l => l.warehouse)])];
       const rackOpts = [...new Set(['Tarima 1', 'Rack A', 'Rack B', 'Rack Frío 1', 'Exhibidor 1', ...locations.map(l => l.rack)])];
@@ -1379,7 +1481,7 @@
       </table>`;
     }
 
-    // ==================== VISTA DE UBICACIONES (MAPA VISUAL RACKS + NIVELES) ====================
+    // ==================== VISTA DE UBICACIONES ====================
     function renderLocationsView() {
       const fWh = $('#map-filter-wh').value;
       const fRack = $('#map-filter-rack').value;
@@ -1492,7 +1594,7 @@
       renderAll();
     }
 
-    // ==================== GESTOR ENTIDADES (PROVEEDORES EDITABLES EN LÍNEA, UBICACIONES, RESPONSABLES) ====================
+    // ==================== GESTOR ENTIDADES ====================
     function listManager(kind) {
       if (kind === 'location') return renderLocationsView();
       if (kind === 'supplier') {
@@ -1706,31 +1808,32 @@
     renderAll();
   </script>
 
-  <!-- ==================== COPILOTO LOGÍSTICO IA ==================== -->
+  <!-- ==================== COPILOTO LOGÍSTICO IA DE ALTO NIVEL ==================== -->
   <button id="wms-ai-launcher" type="button" aria-label="Abrir Copiloto Logístico IA">
+    <span id="wms-ai-pulse"></span>
     <span style="font-size:17px; color:#d6a644;">✦</span>
-    <span>Soporte IA · WMS</span>
+    <span>Soporte IA · Copiloto WMS</span>
     <span id="wms-ai-badge">0</span>
   </button>
 
   <aside id="wms-ai-drawer" class="hidden-ai" aria-label="Asistente Inteligente de Soporte WMS">
     <div class="wms-ai-header">
       <div>
-        <div style="font-size:14px; font-weight:800; display:flex; align-items:center; gap:6px;">
+        <div style="font-size:14.5px; font-weight:800; display:flex; align-items:center; gap:7px;">
           <span style="color:#d6a644;">✦</span> Copiloto Logístico IA
         </div>
-        <div style="font-size:11px; color:#dbe9dc; margin-top:2px;">En vivo · Panadería Espiga de Oro</div>
+        <div style="font-size:11px; color:#dbe9dc; margin-top:2px;">Ingeniería Operativa · Panadería Espiga de Oro</div>
       </div>
       <div style="display:flex; gap:6px;">
-        <button type="button" id="wms-ai-reset" style="background:rgba(255,255,255,0.12); color:#fff; border:none; border-radius:8px; padding:5px 9px; font-size:11px; cursor:pointer;">Limpiar</button>
-        <button type="button" id="wms-ai-close" style="background:rgba(255,255,255,0.12); color:#fff; border:none; border-radius:8px; padding:5px 9px; font-size:12px; font-weight:700; cursor:pointer;">✕</button>
+        <button type="button" id="wms-ai-reset" title="Reiniciar conversación" style="background:rgba(255,255,255,0.14); color:#fff; border:none; border-radius:8px; padding:5px 9px; font-size:11px; font-weight:600; cursor:pointer;">Reiniciar</button>
+        <button type="button" id="wms-ai-close" title="Cerrar asistente" style="background:rgba(255,255,255,0.14); color:#fff; border:none; border-radius:8px; padding:5px 10px; font-size:12px; font-weight:700; cursor:pointer;">✕</button>
       </div>
     </div>
 
     <div class="wms-ai-tabs">
-      <button type="button" class="wms-ai-tab active" data-aitab="chat">Asistente IA</button>
-      <button type="button" class="wms-ai-tab" data-aitab="diag">Auditoría en Vivo</button>
-      <button type="button" class="wms-ai-tab" data-aitab="tours">Guía Rápida</button>
+      <button type="button" class="wms-ai-tab active" data-aitab="chat">💬 Asistente IA</button>
+      <button type="button" class="wms-ai-tab" data-aitab="diag">📊 Auditoría en Vivo</button>
+      <button type="button" class="wms-ai-tab" data-aitab="tours">🧭 Guía Paso a Paso</button>
     </div>
 
     <div id="wms-ai-view-chat" class="wms-ai-body"></div>
@@ -1738,19 +1841,21 @@
     <div id="wms-ai-view-tours" class="wms-ai-body" style="display:none;"></div>
 
     <div class="wms-ai-suggestions">
-      <button type="button" class="wms-sug-pill" data-prompt="¿Qué productos o lotes están pendientes de confirmar?">Pendientes por confirmar</button>
-      <button type="button" class="wms-sug-pill" data-prompt="¿Cuál es la valorización total de mi bodega?">Valorización ($)</button>
-      <button type="button" class="wms-sug-pill" data-prompt="¿Dónde está ubicada la harina y el queso?">Buscar en racks</button>
+      <button type="button" class="wms-sug-pill" data-prompt="Organiza mi turno paso a paso">📋 Organizar mi turno</button>
+      <button type="button" class="wms-sug-pill" data-prompt="¿Qué debo comprar hoy según ROP?">🛒 Plan de compras ROP</button>
+      <button type="button" class="wms-sug-pill" data-prompt="Revisa vencimientos y protocolo FEFO">⏳ Alertas FEFO</button>
+      <button type="button" class="wms-sug-pill" data-prompt="Explícame ABC y 5S en esta bodega">🏭 Metodología ABC y 5S</button>
+      <button type="button" class="wms-sug-pill" data-prompt="¿Qué está pendiente de confirmar?">📝 Pendientes</button>
     </div>
 
     <form id="wms-ai-form" class="wms-ai-footer">
-      <input id="wms-ai-input" type="text" placeholder="Pregunta ubicación, precio, pendientes o vencimiento..." autocomplete="off">
+      <input id="wms-ai-input" type="text" placeholder="Conversa conmigo: pide compras, ubicación, FEFO, ROP o ayuda..." autocomplete="off">
       <button type="submit">Enviar</button>
     </form>
   </aside>
 
   <script>
-  (function startCopilot() {
+  (function startCopilotPro() {
     function boot() {
       const chatBox = document.getElementById('wms-ai-view-chat');
       const diagBox = document.getElementById('wms-ai-view-diag');
@@ -1765,14 +1870,30 @@
 
       if (!launcher || !drawer) return;
 
+      let lastDiscussedProduct = null;
+
       function getLiveSnapshot() {
         const active = products.filter(p => p.active);
         const lowRop = active.filter(p => p.stock <= p.rop);
+        const outOfStock = active.filter(p => p.stock <= 0);
         const pending = active.filter(p => p.status === 'Pendiente de confirmar');
+        const noExpiry = active.filter(p => !p.expiry);
         const expiringLots = lots.filter(l => l.qty > 0 && l.expiry && days(l.expiry) >= 0 && days(l.expiry) <= settings.expiryWindow);
         const expiredLots = lots.filter(l => l.qty > 0 && l.expiry && days(l.expiry) < 0);
+        const classA = active.filter(p => p.abc === 'A');
+        const classB = active.filter(p => p.abc === 'B');
+        const classC = active.filter(p => p.abc === 'C');
         const totalVal = active.reduce((s, p) => s + (p.stock * p.price), 0);
-        return { active, lowRop, pending, expiringLots, expiredLots, totalVal };
+        const reorderPlan = lowRop.map(p => {
+          const qtyToBuy = Math.max(1, Math.ceil(2 * p.rop - p.stock));
+          return { ...p, qtyToBuy, estCost: qtyToBuy * p.price };
+        });
+        const totalReorderCost = reorderPlan.reduce((s, x) => s + x.estCost, 0);
+        return {
+          active, lowRop, outOfStock, pending, noExpiry,
+          expiringLots, expiredLots, classA, classB, classC,
+          totalVal, reorderPlan, totalReorderCost
+        };
       }
 
       function updateAlertBadge() {
@@ -1784,24 +1905,170 @@
         return String(str || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
       }
 
+      function closeDrawer() {
+        drawer.classList.add('hidden-ai');
+      }
+
       function generateReply(raw) {
         const q = normalize(raw);
         const snap = getLiveSnapshot();
 
-        if (/(pendiente|confirmar|verificar|sin fecha)/.test(q)) {
+        // 1. SALUDOS / CONVERSACIÓN INICIAL
+        if (/^(hola|buenos dias|buenas tardes|buenas noches|hey|saludos|como estas|que tal|quien eres)\b/.test(q)) {
           return {
+            tag: 'Asistente Logístico Activo',
+            html: `
+              ¡Hola! Soy el <strong>Copiloto Logístico IA</strong> de la <strong>Panadería Espiga de Oro</strong>. Estoy conectado en tiempo real con tus <strong>${snap.active.length} productos</strong>, <strong>${lots.filter(l=>l.qty>0).length} lotes activos</strong> y <strong>${locations.length} coordenadas de bodega</strong>.<br><br>
+              Puedo ayudarte a:<br>
+              • <strong>Organizar tu turno paso a paso</strong> (prioridades críticas).<br>
+              • <strong>Calcular qué comprar hoy</strong> según Punto de Reorden ($ROP$).<br>
+              • <strong>Auditar vencimientos FEFO</strong> y evitar mermas.<br>
+              • <strong>Ubicar cualquier producto</strong> por Bodega, Rack y Nivel.<br><br>
+              ¿Por dónde te gustaría empezar hoy?
+            `,
+            actions: [
+              { label: '📋 Organizar mi turno', fn: () => handleQuery('Organiza mi turno paso a paso') },
+              { label: '🛒 Calcular compras ROP', fn: () => handleQuery('¿Qué debo comprar hoy según ROP?') },
+              { label: '🧭 Ver Guía de 7 Pasos', fn: () => switchAiTab('tours') }
+            ]
+          };
+        }
+
+        // 2. ORGANIZACIÓN DEL TURNO / PLAN DE ACCIÓN
+        if (/(organiza|turno|empezar|que hago|prioridad|plan|resumen|auditoria)/.test(q)) {
+          let steps = [];
+          if (snap.expiredLots.length > 0) {
+            steps.push(`1️⃣ <strong>Urgente — Retiro de Vencidos (${snap.expiredLots.length}):</strong> Dar de baja inmediata a ${snap.expiredLots.map(l=>`<strong>${esc(l.sku)}</strong>`).join(', ')} para evitar contaminación o venta cruzada.`);
+          }
+          if (snap.expiringLots.length > 0) {
+            steps.push(`2️⃣ <strong>Prioridad FEFO (${snap.expiringLots.length}):</strong> Adelantar en vitrina/producción ${snap.expiringLots.map(l=>`<strong>${esc(l.sku)}</strong> (${esc(l.name)}, vence en ${days(l.expiry)}d)`).join(', ')}.`);
+          }
+          if (snap.lowRop.length > 0) {
+            steps.push(`3️⃣ <strong>Reposición Crítica (${snap.lowRop.length}):</strong> Emitir orden de compra para ${snap.lowRop.map(p=>`<strong>${esc(p.sku)}</strong>`).join(', ')} antes de llegar a quiebre.`);
+          }
+          if (snap.pending.length > 0 || snap.noExpiry.length > 0) {
+            steps.push(`4️⃣ <strong>Saneamiento de Datos:</strong> Tienes <strong>${snap.pending.length}</strong> productos pendientes de confirmar y <strong>${snap.noExpiry.length}</strong> sin fecha de vencimiento asignada.`);
+          }
+          if (!steps.length) {
+            steps.push('✅ <strong>Bodega en orden óptimo:</strong> No hay productos vencidos, bajo ROP ni pendientes de confirmar. Sugiero realizar un <strong>conteo cíclico preventivo</strong> en productos Clase A.');
+          }
+          return {
+            tag: 'Plan Operativo del Turno',
+            html: `
+              He analizado el estado actual de la bodega en San Antonio. Esta es tu <strong>hoja de ruta recomendada</strong> para este turno:<br><br>
+              ${steps.join('<br><br>')}<br><br>
+              ¿Quieres que ejecutemos alguna de estas acciones ahora mismo?
+            `,
+            actions: [
+              ...(snap.pending.length ? [{ label: `✓ Confirmar ${snap.pending.length} pendientes`, fn: () => { const c = confirmAllPendingProducts(); appendBot(`<span class="wms-ai-tag">Acción Ejecutada</span><br>✅ Listo, confirmé <strong>${c} productos pendientes</strong> y validé sus lotes en el sistema.`); } }] : []),
+              { label: 'Ir al Tablero General', fn: () => { navigate('tablero'); closeDrawer(); } },
+              { label: 'Registrar Movimiento', fn: () => { navigate('operaciones'); closeDrawer(); } }
+            ]
+          };
+        }
+
+        // 3. REPOSICIÓN / COMPRAS / ROP
+        if (/(comprar|pedido|reposicion|rop|reorden|abastecer|falta|stock bajo|quiebre)/.test(q)) {
+          if (snap.reorderPlan.length === 0) {
+            return {
+              tag: 'Análisis de Punto de Reorden (ROP)',
+              html: `
+                ✅ <strong>¡Buenas noticias!</strong> Ningún producto activo está por debajo de su Punto de Reorden ($ROP$).<br><br>
+                • <strong>Productos Clase A (Harinas/Quesos):</strong> ${snap.classA.map(p=>`${esc(p.sku)} (${p.stock}/${p.rop} ${esc(p.unit)})`).join(', ')}.<br>
+                • Recuerda que el fórmula aplicada es: <em>ROP = (Consumo Diario × Lead Time) + Stock Seguridad</em>.
+              `,
+              actions: [{ label: 'Ver tabla ROP completa', fn: () => { navigate('reposicion'); closeDrawer(); } }]
+            };
+          }
+          return {
+            tag: 'Plan de Compras Sugerido (ROP)',
+            html: `
+              Detecté <strong>${snap.reorderPlan.length} productos</strong> en nivel crítico ($Stock \\le ROP$):<br><br>
+              ${snap.reorderPlan.map(p => `• <strong>${esc(p.sku)} · ${esc(p.name)}</strong> (ABC ${p.abc})<br>&nbsp;&nbsp;Stock actual: <strong>${p.stock} ${esc(p.unit)}</strong> (ROP: ${p.rop}) → Pedir: <strong>${p.qtyToBuy} ${esc(p.unit)}</strong> (${clp(p.estCost)})`).join('<br><br>')}<br><br>
+              💰 <strong>Inversión total estimada de reposición:</strong> ${clp(snap.totalReorderCost)}.
+            `,
+            actions: [
+              { label: 'Ir a Módulo Reposición', fn: () => { navigate('reposicion'); closeDrawer(); } },
+              { label: 'Registrar Recepción', fn: () => { navigate('operaciones'); closeDrawer(); } }
+            ]
+          };
+        }
+
+        // 4. FEFO / FIFO / VENCIMIENTOS / MERMAS
+        if (/(fefo|fifo|vence|vencimiento|caduc|merma|perdida|expir)/.test(q)) {
+          return {
+            tag: 'Control FEFO y Prevención de Mermas',
+            html: `
+              En la panadería aplicamos rotación híbrida según criticidad:<br>
+              • <strong>FEFO (First Expired, First Out):</strong> Obligatorio en <em>lácteos Colún, cecinas Vinter y quesos</em>. Sale primero el lote con fecha de vencimiento más próxima.<br>
+              • <strong>FIFO (First In, First Out):</strong> Aplicado en <em>sacos de harina de 25 kg</em> sobre tarimas.<br>
+              • <strong>Regla Pastelería:</strong> Rebaja automática del <strong>50% al 4° día</strong> de elaboración.<br><br>
+              <strong>Estado en vivo hoy:</strong><br>
+              • Lotes vencidos: <strong>${snap.expiredLots.length}</strong><br>
+              • Próximos a vencer (≤ ${settings.expiryWindow} días): <strong>${snap.expiringLots.length}</strong> ${snap.expiringLots.map(l=>`(${esc(l.sku)}: ${l.expiry})`).join(', ')}<br>
+              • Productos sin fecha asignada: <strong>${snap.noExpiry.length}</strong>
+            `,
+            actions: [
+              { label: 'Gestionar Lotes FEFO', fn: () => { navigate('lotes'); closeDrawer(); } },
+              { label: 'Registrar Merma / Baja', fn: () => { navigate('operaciones'); closeDrawer(); } }
+            ]
+          };
+        }
+
+        // 5. METODOLOGÍA ABC Y 5S / LAYOUT / RACKS
+        if (/(abc|pareto|5s|japones|layout|rack|bodega|tarima|orden|organizacion fisica)/.test(q)) {
+          return {
+            tag: 'Ingeniería Logística: ABC + 5S',
+            html: `
+              Así estructuramos físicamente la bodega de <strong>Panadería Espiga de Oro</strong>:<br><br>
+              <strong>1. Clasificación ABC (Pareto):</strong><br>
+              • <strong>Clase A (${snap.classA.length} SKUs):</strong> Alta criticidad y valor (Harina tradicional, Queso laminado). Conteo semanal.<br>
+              • <strong>Clase B (${snap.classB.length} SKUs):</strong> Rotación media (Harina integral, Jamón Vinter, Leche Colún). Conteo quincenal.<br>
+              • <strong>Clase C (${snap.classC.length} SKUs):</strong> Complementos y envases. Conteo mensual.<br><br>
+              <strong>2. Metodología 5S en Bodega:</strong><br>
+              • <em>Seiri (Clasificar)</em> y <em>Seiton (Ordenar)</em>: Zonificación en <strong>${locations.length} coordenadas</strong> (Bodega Seca, Cámara Refrigerada y Vitrina).<br>
+              • <em>Seiso (Limpiar)</em> y <em>Seiketsu (Estandarizar)</em>: Harinas sobre <strong>Tarima 1</strong> separadas 10 cm de muros para evitar humedad.<br>
+              • <em>Shitsuke (Disciplina)</em>: Registro obligatorio de cada retiro en este WMS.
+            `,
+            actions: [
+              { label: 'Abrir Mapa Visual de Racks', fn: () => { navigate('ubicaciones'); closeDrawer(); } },
+              { label: 'Iniciar Conteo Cíclico', fn: () => { navigate('conteo'); closeDrawer(); } }
+            ]
+          };
+        }
+
+        // 6. PENDIENTES POR CONFIRMAR
+        if (/(pendiente|confirmar|verificar|sin fecha|editar)/.test(q)) {
+          return {
+            tag: 'Auditoría de Registros Pendientes',
             html: snap.pending.length ? `
-              <strong>Tienes ${snap.pending.length} productos "Pendiente de confirmar":</strong><br><br>
-              ${snap.pending.map(p => `• <strong>${esc(p.sku)}</strong> (${esc(p.name)})`).join('<br>')}<br><br>
-              Puedes editarlos directamente en la tabla de <em>Productos</em> o confirmarlos todos con un solo clic.
-            ` : '¡Excelente! No tienes productos pendientes de confirmar en este momento.',
+              Tienes <strong>${snap.pending.length} productos</strong> marcados en ámbar como <em>"Pendiente de confirmar"</em>:<br><br>
+              ${snap.pending.map(p => `• <strong>${esc(p.sku)}</strong> — ${esc(p.name)} (Proveedor: ${esc(p.supplier)})`).join('<br>')}<br><br>
+              ¿Quieres que los confirme todos automáticamente ahora o prefieres editar sus fechas y proveedores manualmente?
+            ` : '✅ <strong>¡Todo al día!</strong> No tienes productos pendientes de confirmar en el inventario.',
             actions: snap.pending.length ? [
-              { label: '✓ Confirmar todos ahora', fn: () => { confirmAllPendingProducts(); drawer.classList.add('hidden-ai'); } },
-              { label: 'Ir a editarlos en Productos', fn: () => { navigate('productos'); drawer.classList.add('hidden-ai'); } }
+              { label: '✓ Confirmar todos ahora', fn: () => { const c = confirmAllPendingProducts(); appendBot(`<span class="wms-ai-tag">Confirmación Masiva</span><br>✅ Se confirmaron <strong>${c} productos</strong> y sus lotes asociados.`); } },
+              { label: 'Ir a Productos para editar', fn: () => { navigate('productos'); closeDrawer(); } }
             ] : []
           };
         }
 
+        // 7. VALORIZACIÓN Y FINANZAS DE INVENTARIO
+        if (/(valor|precio|plata|dinero|costo|capital|inventario total|cuanto vale)/.test(q)) {
+          const topProd = [...snap.active].sort((a,b) => (b.stock*b.price) - (a.stock*a.price))[0];
+          return {
+            tag: 'Valorización Financiera de Bodega',
+            html: `
+              💰 <strong>Valorización Total del Inventario:</strong> <span style="font-size:15px; font-weight:800; color:#193e32;">${clp(snap.totalVal)}</span><br><br>
+              • <strong>Total de SKUs activos:</strong> ${snap.active.length} productos.<br>
+              • <strong>Producto de mayor capital inmovilizado:</strong> ${topProd ? `<strong>${esc(topProd.name)}</strong> (${clp(topProd.stock * topProd.price)} en ${topProd.stock} ${esc(topProd.unit)})` : 'N/A'}.<br><br>
+              Puedes modificar cualquier precio unitario directamente en la tabla de productos y el sistema recalculará este monto al instante.
+            `,
+            actions: [{ label: 'Ver Reporte Valorizado', fn: () => { navigate('reportes'); closeDrawer(); } }]
+          };
+        }
+
+        // 8. BÚSQUEDA ESPECÍFICA DE PRODUCTOS (O SEGUIMIENTO CONTEXTUAL)
         const matched = products.filter(p => {
           const skuN = normalize(p.sku);
           const words = normalize(p.name).split(/\s+/).filter(w => w.length > 3);
@@ -1809,36 +2076,39 @@
         });
 
         if (matched.length > 0) {
+          lastDiscussedProduct = matched[0];
           return {
+            tag: `Ficha Rápida (${matched.length} coincidencia${matched.length>1?'s':''})`,
             html: matched.map(p => `
-              <strong>${esc(p.sku)} · ${esc(p.name)}</strong><br>
-              • <strong>Ubicación:</strong> ${esc(p.warehouse)} → <strong>${esc(p.rack)}</strong> → <strong>${esc(p.level)}</strong><br>
-              • <strong>Stock:</strong> ${p.stock} ${esc(p.unit)} (ROP: ${p.rop})<br>
-              • <strong>Precio unitario:</strong> ${clp(p.price)} · <strong>Valor:</strong> ${clp(p.stock * p.price)}<br>
-              • <strong>Estado:</strong> ${statusOf(p)} · <strong>Vencimiento:</strong> ${p.expiry || 'Sin confirmar'}
-            `).join('<hr style="margin:8px 0; border-color:#e9eee7;">'),
+              <strong>${esc(p.sku)} · ${esc(p.name)}</strong> (Clase ${p.abc})<br>
+              • 📍 <strong>Ubicación:</strong> ${esc(p.warehouse)} → <strong>${esc(p.rack)}</strong> → <strong>${esc(p.level)}</strong><br>
+              • 📦 <strong>Stock actual:</strong> ${p.stock} ${esc(p.unit)} (ROP: ${p.rop})<br>
+              • 💵 <strong>Precio unitario:</strong> ${clp(p.price)} · <strong>Total:</strong> ${clp(p.stock * p.price)}<br>
+              • ⏳ <strong>Política ${p.policy}:</strong> Vence ${p.expiry || '<em>Sin confirmar</em>'} · Estado: <strong>${statusOf(p)}</strong>
+            `).join('<hr style="margin:9px 0; border-color:#e9eee7;">'),
             actions: [
-              { label: 'Editar en Productos', fn: () => { navigate('productos'); drawer.classList.add('hidden-ai'); } },
-              { label: 'Ver en Mapa de Racks', fn: () => { navigate('ubicaciones'); drawer.classList.add('hidden-ai'); } }
+              { label: 'Ver en Mapa de Racks', fn: () => { navigate('ubicaciones'); closeDrawer(); } },
+              { label: 'Editar en Productos', fn: () => { navigate('productos'); closeDrawer(); } },
+              { label: 'Registrar Salida / Entrada', fn: () => { navigate('operaciones'); closeDrawer(); } }
             ]
           };
         }
 
-        if (/(valor|precio|plata|dinero|costo)/.test(q)) {
-          return {
-            html: `<strong>Valorización Total Bodega:</strong> ${clp(snap.totalVal)} en ${snap.active.length} productos activos.`,
-            actions: [{ label: 'Ver Reporte Valorizado', fn: () => { navigate('reportes'); drawer.classList.add('hidden-ai'); } }]
-          };
-        }
-
+        // 9. RESPUESTA CONVERSACIONAL INTELIGENTE POR DEFECTO
         return {
+          tag: 'Copiloto Logístico IA',
           html: `
-            <strong>Resumen en vivo:</strong><br>
-            • <strong>Valorización bodega:</strong> ${clp(snap.totalVal)}<br>
-            • <strong>Pendientes de confirmar:</strong> ${snap.pending.length}<br>
-            • <strong>Bajo ROP:</strong> ${snap.lowRop.length} · <strong>Vencidos:</strong> ${snap.expiredLots.length}
+            Entiendo tu consulta sobre <em>"${esc(raw)}"</em>. Aquí tienes el pulso actual del almacén:<br><br>
+            • <strong>Capital en bodega:</strong> ${clp(snap.totalVal)} (${snap.active.length} SKUs)<br>
+            • <strong>Alertas ROP:</strong> ${snap.lowRop.length} productos para pedir<br>
+            • <strong>Control FEFO:</strong> ${snap.expiringLots.length} por vencer · ${snap.expiredLots.length} vencidos<br>
+            • <strong>Pendientes:</strong> ${snap.pending.length} por confirmar<br><br>
+            Prueba preguntarme por un producto específico (ej. <em>"harina"</em>, <em>"queso"</em>, <em>"jamón"</em>, <em>"leche"</em>), o pídeme que <strong>organice tu turno</strong> o <strong>calcule las compras del día</strong>.
           `,
-          actions: [{ label: 'Ir a Productos Editables', fn: () => { navigate('productos'); drawer.classList.add('hidden-ai'); } }]
+          actions: [
+            { label: '📋 Organizar mi turno', fn: () => handleQuery('Organiza mi turno paso a paso') },
+            { label: '🧭 Abrir Guía de 7 Pasos', fn: () => switchAiTab('tours') }
+          ]
         };
       }
 
@@ -1850,10 +2120,10 @@
         chatBox.scrollTop = chatBox.scrollHeight;
       }
 
-      function appendBot(html, actions = []) {
+      function appendBot(html, actions = [], tag = '') {
         const d = document.createElement('div');
         d.className = 'wms-msg bot';
-        d.innerHTML = html;
+        d.innerHTML = (tag ? `<div class="wms-ai-tag">${esc(tag)}</div><br>` : '') + html;
         if (actions.length) {
           const wrap = document.createElement('div');
           wrap.className = 'wms-ai-actions';
@@ -1875,10 +2145,100 @@
         if (!text.trim()) return;
         switchAiTab('chat');
         appendUser(text);
+
+        const typing = document.createElement('div');
+        typing.className = 'wms-typing';
+        typing.innerHTML = '<span></span><span></span><span></span> Analizando bodega...';
+        chatBox.appendChild(typing);
+        chatBox.scrollTop = chatBox.scrollHeight;
+
         setTimeout(() => {
+          typing.remove();
           const res = generateReply(text);
-          appendBot(res.html, res.actions);
-        }, 120);
+          appendBot(res.html, res.actions, res.tag);
+        }, 280);
+      }
+
+      function renderAuditTab() {
+        const snap = getLiveSnapshot();
+        const accuracy = counts.length
+          ? Math.round(counts.filter(c => Math.abs(c.system - c.physical) < 0.001).length / counts.length * 100) + '%'
+          : 'Sin conteos aún (Meta: ' + settings.targetAccuracy + '%)';
+
+        diagBox.innerHTML = `
+          <div class="wms-tour-card">
+            <div style="font-weight:800; color:#193e32; font-size:13.5px; margin-bottom:8px;">📊 Diagnóstico Operativo en Tiempo Real</div>
+            <div style="font-size:12.5px; line-height:1.7;">
+              • <strong>Valorización Total Bodega:</strong> <span style="color:#193e32; font-weight:800;">${clp(snap.totalVal)}</span><br>
+              • <strong>Exactitud de Inventario (IRA):</strong> ${accuracy}<br>
+              • <strong>Productos Clase A / B / C:</strong> ${snap.classA.length} / ${snap.classB.length} / ${snap.classC.length} SKUs<br>
+              • <strong>Alertas Punto de Reorden (ROP):</strong> ${snap.lowRop.length} productos bajo mínimo<br>
+              • <strong>Control FEFO (Vencidos / Por vencer):</strong> ${snap.expiredLots.length} vencidos · ${snap.expiringLots.length} próximos<br>
+              • <strong>Registros Pendientes de Confirmar:</strong> ${snap.pending.length} productos
+            </div>
+            <div class="wms-ai-actions">
+              <button type="button" class="wms-chip-btn" onclick="navigate('reportes'); document.getElementById('wms-ai-drawer').classList.add('hidden-ai');">Abrir Reporte Valorizado →</button>
+              <button type="button" class="wms-chip-btn" onclick="navigate('reposicion'); document.getElementById('wms-ai-drawer').classList.add('hidden-ai');">Ver Pedidos ROP →</button>
+            </div>
+          </div>
+
+          <div class="wms-tour-card">
+            <div style="font-weight:800; color:#193e32; font-size:13px; margin-bottom:6px;">⚡ Acciones Rápidas de Saneamiento</div>
+            <div style="font-size:12px; color:#61716a; margin-bottom:8px;">Resuelve alertas pendientes del turno con un clic:</div>
+            <div class="wms-ai-actions">
+              <button type="button" class="wms-chip-btn" onclick="confirmAllPendingProducts(); renderAuditTab();">✓ Confirmar todos los pendientes (${snap.pending.length})</button>
+              <button type="button" class="wms-chip-btn" onclick="confirmAllPendingLots(); renderAuditTab();">✓ Validar todos los lotes</button>
+            </div>
+          </div>
+        `;
+      }
+
+      function renderGuidesTab() {
+        const guides = [
+          {
+            num: '1', title: 'Recepción de Mercadería y Lotes',
+            desc: 'Registra ingresos de harina, lácteos o cecinas indicando proveedor, factura/guía, lote, fecha de vencimiento y coordenada exacta.',
+            btn: 'Ir a Recepción y Salidas →', nav: 'operaciones'
+          },
+          {
+            num: '2', title: 'Control de Vencimientos y Rotación FEFO',
+            desc: 'Supervisa qué lotes vencen primero (lácteos Colún, cecinas Vinter) y aplica descuento del 50% al 4° día en pastelería.',
+            btn: 'Abrir Módulo FEFO / Lotes →', nav: 'lotes'
+          },
+          {
+            num: '3', title: 'Edición y Confirmación de Pendientes',
+            desc: 'Edita en línea precios unitarios, fechas sin confirmar, proveedores y estados marcados en ámbar.',
+            btn: 'Ir a Productos Editables →', nav: 'productos'
+          },
+          {
+            num: '4', title: 'Zonificación Física (Bodega · Rack · Nivel) y 5S',
+            desc: 'Visualiza racks y niveles disponibles, protege los sacos de harina sobre tarimas y reubica productos con un clic.',
+            btn: 'Ver Mapa de Racks y Niveles →', nav: 'ubicaciones'
+          },
+          {
+            num: '5', title: 'Reposición Automática y Punto de Reorden (ROP)',
+            desc: 'Revisa qué insumos llegaron a su nivel mínimo según consumo diario y Lead Time del proveedor, con costo estimado.',
+            btn: 'Ver Plan de Compras ROP →', nav: 'reposicion'
+          },
+          {
+            num: '6', title: 'Conteo Cíclico y Exactitud de Inventario (IRA)',
+            desc: 'Audita físicamente productos Clase A (semanal), Clase B (quincenal) y Clase C (mensual) antes de autorizar ajustes.',
+            btn: 'Iniciar Conteo Cíclico →', nav: 'conteo'
+          },
+          {
+            num: '7', title: 'Control de Mermas y Reportes Valorizados',
+            desc: 'Registra bajas justificadas por caducidad o daño e imprime el reporte valorizado completo para la Sra. Angélica Mesa.',
+            btn: 'Ver Reportes Valorizados →', nav: 'reportes'
+          }
+        ];
+
+        toursBox.innerHTML = guides.map(g => `
+          <div class="wms-tour-card">
+            <div style="font-weight:800; color:#193e32; font-size:13px; margin-bottom:4px;">${g.num}. ${g.title}</div>
+            <div style="font-size:12px; color:#61716a; line-height:1.45; margin-bottom:8px;">${g.desc}</div>
+            <button type="button" class="wms-chip-btn" onclick="navigate('${g.nav}'); document.getElementById('wms-ai-drawer').classList.add('hidden-ai');">${g.btn}</button>
+          </div>
+        `).join('');
       }
 
       function switchAiTab(tabName) {
@@ -1886,49 +2246,40 @@
         chatBox.style.display = tabName === 'chat' ? 'flex' : 'none';
         diagBox.style.display = tabName === 'diag' ? 'flex' : 'none';
         toursBox.style.display = tabName === 'tours' ? 'flex' : 'none';
-        if (tabName === 'diag') {
-          const snap = getLiveSnapshot();
-          diagBox.innerHTML = `
-            <div class="wms-tour-card">
-              <div style="font-weight:800; color:#193e32; margin-bottom:6px;">Auditoría en Vivo</div>
-              <div style="font-size:12.5px; line-height:1.6;">
-                • <strong>Valor total bodega:</strong> ${clp(snap.totalVal)}<br>
-                • <strong>Pendientes por confirmar:</strong> ${snap.pending.length}<br>
-                • <strong>Productos bajo ROP:</strong> ${snap.lowRop.length}<br>
-                • <strong>Lotes vencidos / por vencer:</strong> ${snap.expiredLots.length} / ${snap.expiringLots.length}
-              </div>
-            </div>
-          `;
-        }
-        if (tabName === 'tours') {
-          toursBox.innerHTML = `
-            <div class="wms-tour-card">
-              <div style="font-weight:800; color:#193e32; margin-bottom:4px;">1. Confirmar y Editar Pendientes</div>
-              <div style="font-size:12px; color:#61716a; margin-bottom:8px;">Todos los campos en ámbar ("Pendiente de confirmar", "Sin confirmar", "Por confirmar") son editables en línea.</div>
-              <button type="button" class="wms-chip-btn" onclick="navigate('productos'); document.getElementById('wms-ai-drawer').classList.add('hidden-ai');">Ir a Productos →</button>
-            </div>
-            <div class="wms-tour-card">
-              <div style="font-weight:800; color:#193e32; margin-bottom:4px;">2. Ubicar en Bodega, Rack y Nivel</div>
-              <div style="font-size:12px; color:#61716a; margin-bottom:8px;">Usa el mapa visual de racks para ver niveles disponibles y mover mercadería.</div>
-              <button type="button" class="wms-chip-btn" onclick="navigate('ubicaciones'); document.getElementById('wms-ai-drawer').classList.add('hidden-ai');">Ir a Racks y Niveles →</button>
-            </div>
-          `;
-        }
+        if (tabName === 'diag') renderAuditTab();
+        if (tabName === 'tours') renderGuidesTab();
       }
 
-      launcher.onclick = () => { drawer.classList.toggle('hidden-ai'); updateAlertBadge(); };
-      closeBtn.onclick = () => drawer.classList.add('hidden-ai');
+      launcher.onclick = () => {
+        drawer.classList.toggle('hidden-ai');
+        updateAlertBadge();
+        if (!drawer.classList.contains('hidden-ai')) input.focus();
+      };
+      closeBtn.onclick = closeDrawer;
       resetBtn.onclick = () => { chatBox.innerHTML = ''; welcome(); };
       document.querySelectorAll('.wms-ai-tab').forEach(t => t.onclick = () => switchAiTab(t.dataset.aitab));
       document.querySelectorAll('.wms-sug-pill').forEach(p => p.onclick = () => handleQuery(p.dataset.prompt));
       form.onsubmit = e => { e.preventDefault(); const v = input.value; input.value = ''; handleQuery(v); };
 
       const origRender = window.renderAll;
-      window.renderAll = function() { origRender.apply(this, arguments); updateAlertBadge(); };
+      window.renderAll = function() {
+        origRender.apply(this, arguments);
+        updateAlertBadge();
+      };
 
       function welcome() {
         const snap = getLiveSnapshot();
-        appendBot(`Hola. Ahora todas las opciones que decían <strong>"Pendiente de confirmar"</strong> o <strong>"Sin confirmar"</strong> son editables directamente en las tablas y tienen botón de confirmación rápida.`);
+        appendBot(
+          `¡Bienvenido al turno en <strong>Panadería Espiga de Oro</strong>! Soy tu <strong>Copiloto Logístico IA</strong>.<br><br>` +
+          `Estoy monitoreando <strong>${snap.active.length} productos</strong> (${clp(snap.totalVal)} valorizados). Actualmente tienes <strong>${snap.lowRop.length} alertas ROP</strong>, <strong>${snap.expiringLots.length} lotes próximos a vencer</strong> y <strong>${snap.pending.length} pendientes</strong>.<br><br>` +
+          `Puedes conversar conmigo o usar los botones rápidos para organizar tu bodega.`,
+          [
+            { label: '📋 Organizar mi turno', fn: () => handleQuery('Organiza mi turno paso a paso') },
+            { label: '🛒 Ver compras ROP', fn: () => handleQuery('¿Qué debo comprar hoy según ROP?') },
+            { label: '🧭 Guía de 7 pasos', fn: () => switchAiTab('tours') }
+          ],
+          'Sistema Conectado en Vivo'
+        );
       }
 
       updateAlertBadge();
